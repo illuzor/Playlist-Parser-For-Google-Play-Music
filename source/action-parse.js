@@ -1,13 +1,14 @@
 var playlists = document.getElementById("playlists-container").getElementsByClassName("playlist-drawer-item");
 var string = "";
-var total = playlists.length;
-var count = 0;
+var totalPlaylists = playlists.length;
+var currentPlaylist = 0;
+var totalTracks = 0;
 
 preParse();
 
 function preParse() {
-    string += playlists[count].childNodes[2].text + ":\n";
-    playlists[count].click();
+    string += playlists[currentPlaylist].childNodes[2].text + ":\n";
+    playlists[currentPlaylist].click();
     setTimeout(parse, 1000);
 }
 
@@ -19,14 +20,19 @@ function parse() {
         string += " - " + tracklist[j].childNodes[1].getElementsByClassName("column-content")[0].innerText; // artist
         string += "  ( " + tracklist[j].childNodes[4].getElementsByClassName("column-content")[0].innerText + " )"; // album
         string += "\n";
+        totalTracks++;
     }
-    string += "\n\n";
-    count++;
+    string += "\n";
+    currentPlaylist++;
 
-    console.log(count + "/" + total);
-    if (count < total) {
+    console.log(currentPlaylist + "/" + totalPlaylists);
+    if (currentPlaylist < totalPlaylists) {
         preParse();
     } else {
+        string += " ---------- \n"
+        string += "Total playlists: " + totalPlaylists + "\n";
+        string += "Total tracks: " + totalTracks;
+
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
